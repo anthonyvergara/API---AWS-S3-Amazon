@@ -20,8 +20,11 @@ import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
+import software.amazon.awssdk.services.s3.model.S3Object;
+import software.amazon.awssdk.services.s3.paginators.ListObjectsV2Iterable;
 
 @Service
 public class DocumentoImpl implements DocumentoService{
@@ -36,9 +39,19 @@ public class DocumentoImpl implements DocumentoService{
 	}
 
 	@Override
-	public List<Documento> listAll() {
+	public List<String> listAll() {
 		
-		return null;
+		ListObjectsV2Request listReq = ListObjectsV2Request.builder().bucket(bucketName).build();
+		
+		ListObjectsV2Iterable listV2 = s3.listObjectsV2Paginator(listReq);
+		
+		List<String> lista = new ArrayList<>();
+		
+		listV2.contents().forEach(value ->
+			lista.add(value.key())
+		);
+		
+		return lista;
 	}
 
 	@Override

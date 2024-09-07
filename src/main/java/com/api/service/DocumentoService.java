@@ -9,7 +9,7 @@ import com.api.model.Documento;
 
 public interface DocumentoService {
 	
-	public List<Documento> listAll();
+	public List<String> listAll();
 	public List<String> save(List<MultipartFile> file);
 	public List<Resource> download(List<String> file);
 	public String upload(MultipartFile file);
